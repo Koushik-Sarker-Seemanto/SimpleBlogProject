@@ -19,9 +19,13 @@ To run this project
 This is based on MongoDB so user must have to run mongod server in his pc.
 
 For installing MongoDb.
-    windows: follow the link: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
-    Linux:
-    Step 1 — Installing MongoDB
+windows: 
+    
+    follow the link: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
+    
+Linux:
+    
+Step 1 — Installing MongoDB
 
 Ubuntu’s official package repositories include an up-to-date version of MongoDB, which means we can install the necessary packages using apt.
 
