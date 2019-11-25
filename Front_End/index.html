@@ -1,0 +1,122 @@
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="#">RedditBlog</a>
+
+    <!-- Links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+        <a class="nav-link" href="./index.html">Home</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="./signin.html">Signin</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="./signup.html">Signup</a>
+        </li>
+    </ul>
+</nav>
+
+
+
+
+<div class="d-flex justify-content-center" style="background: #56baed;" >
+    <div class=" justify-content-center col-md-6" style="background: #56baed;">
+        <h1 class="d-flex justify-content-center" style="margin-top: 80px;">Posts</h1>
+        
+        <div class="row" id="postList" style="margin-bottom: 10px;margin-top: 20px;">
+
+        <script>
+            var url = "http://localhost:8001/api/post/all_posts";
+        
+            // var token = window.localStorage.getItem('token');
+            // var token_json = JSON.parse(token);
+            var xhr =new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            // xhr.setRequestHeader("Authorization","Bearer "+token_json.token);
+            xhr.onload = function() {
+                if (this.status == 200) {
+                    console.log(this.response);
+                // Here we go on the new page
+                var jsonResponse = JSON.parse(this.response);
+                    jsonResponse.forEach(dataJson =>{
+                
+                    var app = document.getElementById("postList");
+
+                    var contain = document.createElement("div");
+                    contain.setAttribute("class", "container col-md-12");
+                    contain.style.marginBottom = "10px";
+                    app.appendChild(contain);
+
+                    var containCard = document.createElement("div");
+                    containCard.setAttribute("class", "card");
+                    contain.appendChild(containCard);
+
+                    var cardbody = document.createElement("div");
+                    cardbody.setAttribute("class","card-body");
+                    containCard.appendChild(cardbody);
+
+                    var cardtitle = document.createElement("h2");
+                    cardtitle.setAttribute("class","card-title");
+                    cardtitle.textContent = dataJson.title;
+                    cardbody.appendChild(cardtitle);
+
+                    var user_name = document.createElement("p");
+                    user_name.textContent = "Created By: "+dataJson.user.name;
+                    cardbody.appendChild(user_name);
+
+
+                    var carddate  = document.createElement("p");
+                    carddate.textContent = dataJson.time +" , "+ dataJson.date;
+                    cardbody.appendChild(carddate);
+
+                    var horizontalline = document.createElement("hr");
+                    cardbody.appendChild(horizontalline);
+
+                    var cardtext = document.createElement("p");
+                    cardtext.setAttribute("class","card-text");
+                    cardtext.textContent = dataJson.body;
+                    cardbody.appendChild(cardtext);
+
+                    var hr_tag = document.createElement("hr");
+                    cardbody.appendChild(hr_tag);
+
+                    var rate_text = document.createElement("p");
+                    rate_text.setAttribute("class","text-primary")
+                    rate_text.textContent = "Rating : "+dataJson.rating;
+                    cardbody.appendChild(rate_text);
+
+                    var carda = document.createElement("a");
+                    carda.setAttribute("class", "btn btn-outline-success");
+                    carda.setAttribute("href","./singlePost.html?id="+dataJson._id);
+                    carda.textContent = "Read More";
+                    cardbody.appendChild(carda);
+        
+                    });
+        
+                }
+                else {
+                alert("Invalid Index");
+                }
+            };
+            xhr.send();
+        </script>
+                    
+        </div>
+        
+    </div>
+</div>
+    
+    

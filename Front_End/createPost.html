@@ -1,0 +1,86 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+<script>
+    function post(){
+        var title_t = document.getElementById("title_text").value;
+        var body_t = document.getElementById("body_text").value;
+        var url = "http://localhost:8001/api/post/create";
+
+        var token = window.localStorage.getItem('token');
+        var token_json = JSON.parse(token);
+        var xhr =new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Authorization","Bearer "+token_json.token);
+        var data = JSON.stringify({"title":title_t,"body":body_t});
+
+        xhr.onload = function() {
+            if (this.status == 200) {
+                alert("Post Created");
+                console.log(this.response);
+                window.location.replace("./profile.html");
+            // Here we go on the new page
+            var jsonResponse = JSON.parse(this.response);
+            }
+            else {
+            alert("Invalid Post");
+            }
+        };
+        xhr.send(data);
+    }
+    
+</script>
+    
+
+
+    <script>
+            function logout(){
+                window.localStorage.clear();
+                window.location.replace("./index.html");
+            }
+        </script>
+
+
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="#">RedditBlog</a>
+
+    <!-- Links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+        <a class="nav-link" href="./Authorized_Index.html">Home</a>
+        </li>
+        <li class="nav-item">
+                <a class="nav-link" href="./profile.html">Profile</a>
+                </li>
+        <li class="nav-item">
+        <a class="nav-link" href="./createPost.html">Create Post</a>
+        </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+        <a class="nav-link" href="javascript: logout();">SignOut</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="d-flex justify-content-center " style="background: #56baed;height: 100%; width: 100%;" >
+    <div class="justify-content-center col-md-12">
+        <h1 class="d-flex justify-content-center" style="margin-top: 80px;">Create Post</h1>
+        <div class="container">
+            <form>
+                <label for="title_text"><h3>Title :</h3></label><br>
+                <input type="text" class="form-control" id="title_text" rows="1" placeholder="Title"><br><br>
+                <label for="body_text"><h3>Body :</h3></label><br>
+                <textarea class="form-control" id="body_text" rows="15" placeholder="Body"></textarea>
+            </form>
+            <button class="btn btn-success" style="padding: 10px;" onclick="javascript:post();">Create Post</button><br><br>
+        </div>
+    </div>
+</div>

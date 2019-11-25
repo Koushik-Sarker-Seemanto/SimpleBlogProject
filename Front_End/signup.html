@@ -1,0 +1,93 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<link rel="stylesheet" type="text/css" href="css/style.css">
+
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script>
+    function signup(){
+        var name = document.getElementById("name_text").value;
+        var login_text = document.getElementById("login_text").value;
+        var password_text =document.getElementById("password_text").value;
+        var url = "http://localhost:8001/api/signup";
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("POST", url, true);
+
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        var data = JSON.stringify({"name":name,"email":login_text,"password":password_text});
+
+        xhr.onload = function () {
+        if (this.status == 200) {
+          // Here we go on the new page
+          var jsonResponse = JSON.parse(this.response);
+          window.localStorage.setItem('token', JSON.stringify(jsonResponse));
+          console.log(jsonResponse)
+            window.location.replace("./profile.html");
+        }
+        else {
+          alert("Invalid Signup");
+        }
+      };
+      xhr.send(data);
+
+    }
+</script>
+
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <!-- Brand/logo -->
+  <a class="navbar-brand" href="#">RedditBlog</a>
+
+  <!-- Links -->
+  <ul class="navbar-nav">
+      <li class="nav-item">
+      <a class="nav-link" href="./index.html">Home</a>
+      </li>
+      <li class="nav-item">
+      <a class="nav-link" href="./signin.html">Signin</a>
+      </li>
+  </ul>
+</nav>
+
+
+
+
+
+<!------ Include the above in your HEAD tag ---------->
+
+<div style="width: 100%;height: 100% ;background: #56baed;">
+
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="https://i.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png" id="icon" alt="User Icon" style="padding: 20px;"/>
+    </div>
+
+    <!-- Login Form -->
+    <form>
+            <input type="text" id="name_text" class="fadeIn second" name="login" placeholder="Name">
+      <input type="text" id="login_text" class="fadeIn third" name="login" placeholder="Email">
+      <input type="password" id="password_text" class="fadeIn forth" name="login" placeholder="Password">
+    </form>
+    <button class="btn btn-primary" id="signinBtn" onclick="javascript: signup();" class="fadeIn fourth" style="margin-bottom: 20px;padding: 10px;width: inherit;">Signup</button>
+
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+      
+    </div>
+
+  </div>
+</div>
+</div>

@@ -1,0 +1,212 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .rate {
+        float: left;
+        height: 46px;
+        padding: 0 10px;
+    }
+
+    .rate:not(:checked)>input {
+        position: absolute;
+        top: -9999px;
+    }
+
+    .rate:not(:checked)>label {
+        float: right;
+        width: 1em;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 30px;
+        color: #ccc;
+    }
+
+    .rate:not(:checked)>label:before {
+        content: '★ ';
+    }
+
+    .rate>input:checked~label {
+        color: #ffc700;
+    }
+
+    .rate:not(:checked)>label:hover,
+    .rate:not(:checked)>label:hover~label {
+        color: #deb217;
+    }
+
+    .rate>input:checked+label:hover,
+    .rate>input:checked+label:hover~label,
+    .rate>input:checked~label:hover,
+    .rate>input:checked~label:hover~label,
+    .rate>label:hover~input:checked~label {
+        color: #c59b08;
+    }
+
+</style>
+
+
+
+
+<script>
+
+    function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        return vars;
+    }
+
+
+    var id = getUrlVars()["id"];
+    var url = "http://localhost:8001/api/post/"+id;
+
+    // var token = window.localStorage.getItem('token');
+    // var token_json = JSON.parse(token);
+    var xhr =new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    // xhr.setRequestHeader("Authorization","Bearer "+token_json.token);
+    xhr.onload = function() {
+        if (this.status == 200) {
+            console.log(this.response);
+            // Here we go on the new page
+            var jsonResponse = JSON.parse(this.response);
+            var card_title_t = document.getElementById("card_title");
+            card_title_t.textContent= jsonResponse.title;
+
+            var card_username_t = document.getElementById("card_username");
+            card_username_t.textContent = jsonResponse.user.name;
+
+            var card_datetime_t = document.getElementById("card_datetime");
+            card_datetime_t.textContent = jsonResponse.date+", "+jsonResponse.time;
+
+            var card_description_t = document.getElementById("card_description");
+            card_description_t.textContent = jsonResponse.body;
+
+            var rating_text_t = document.getElementById("rating_text");
+            rating_text_t.textContent = "Rating : "+jsonResponse.rating;
+
+            var rating_value = jsonResponse.rating;
+            rating_value = parseInt(rating_value);
+
+            var star_1 = document.getElementById("star1");
+            var star_2 = document.getElementById("star2");
+            var star_3 = document.getElementById("star3");
+            var star_4 = document.getElementById("star4");
+            var star_5 = document.getElementById("star5");
+
+            if(rating_value == 1){
+                star_1.checked = true;
+            }
+            else if(rating_value==2){
+                star_2.checked = true;
+            }
+            else if(rating_value==3){
+                star_3.checked = true;
+            }
+            else if(rating_value==4){
+                star_4.checked = true;
+            }
+            else if(rating_value==4){
+                star_5.checked = true;
+            }
+        }
+        else {
+            alert("Invalid profile");
+        }
+    };
+    xhr.send();
+    
+</script>
+
+
+<script>
+        function logout(){
+            window.localStorage.clear();
+            window.location.replace("./index.html");
+        }
+    </script>
+
+
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="#">RedditBlog</a>
+
+    <!-- Links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+        <a class="nav-link" href="./Authorized_Index.html">Home</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="./profile.html">Profile</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="./createPost.html">Create Post</a>
+        </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+            <a class="nav-link" href="javascript: logout();">SignOut</a>
+            </li>
+        </ul>
+</nav>
+
+<div class="d-flex justify-content-center col-md-12 mt-2 mb-2 " style="background: #56baed;" >
+    <div class="col-md-9">
+        <h1 class="d-flex justify-content-center display-2" style="margin-top: 60px;">Post Details</h1>
+        <div class="container col-md-12" style="margin-bottom: 10px;">
+            <div class="card" style="padding: 30px;">
+                <div class="card-body">
+                    <h2 class="card-title display-3" id="card_title"></h2>
+                    <h4 id="card_username"></h4>
+                    <p id="card_datetime"> </p><hr>
+                    <h3 id="card_description" class="card-text">
+                    </h3>
+                    <br>
+                    <p id="rating_text" class="text-primary" style="margin-left: 15px;"></p>
+                    <!-- <a class="btn btn-danger" href="#">Delete</a> -->
+
+
+                    <div style="margin-top: 10px;">
+            
+                                <div class="pull-right ">
+                                    <div iv class="rate" style="margin-bottom: 10px;">
+                                        <input type="radio" id="star5" name="rate" value="5" />
+                                        <label for="star5" title="text">5 stars</label>
+                                        <input type="radio" id="star4" name="rate" value="4" />
+                                        <label for="star4" title="text">4 stars</label>
+                                        <input type="radio" id="star3" name="rate" value="3" />
+                                        <label for="star3" title="text">3 stars</label>
+                                        <input type="radio" id="star2" name="rate" value="2" />
+                                        <label for="star2" title="text">2 stars</label>
+                                        <input type="radio" id="star1" name="rate" value="1" />
+                                        <label for="star1" title="text">1 star</label>
+            
+                                    </div>
+                                    <br>
+                                </div>
+                            </span>
+                        </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+<script>
+
+    function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        return vars;
+    }
+
+
+    var id = getUrlVars()["id"];
+    var url = "http://localhost:8001/api/post/"+id;
+
+    // var token = window.localStorage.getItem('token');
+    // var token_json = JSON.parse(token);
+    var xhr =new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    // xhr.setRequestHeader("Authorization","Bearer "+token_json.token);
+    xhr.onload = function() {
+        if (this.status == 200) {
+            console.log(this.response);
+            // Here we go on the new page
+            var jsonResponse = JSON.parse(this.response);
+            var card_title_t = document.getElementById("card_title");
+            card_title_t.textContent= jsonResponse.title;
+
+            var card_username_t = document.getElementById("card_username");
+            card_username_t.textContent = jsonResponse.user.name;
+
+            var card_datetime_t = document.getElementById("card_datetime");
+            card_datetime_t.textContent = jsonResponse.date+", "+jsonResponse.time;
+
+            var card_description_t = document.getElementById("card_description");
+            card_description_t.textContent = jsonResponse.body;
+        }
+        else {
+            alert("Invalid profile");
+        }
+    };
+    xhr.send();
+    
+</script>
+
+
+    
+
+
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="#">RedditBlog</a>
+
+    <!-- Links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+        <a class="nav-link" href="./index.html">Home</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="./signin.html">Signin</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="./signup.html">Signup</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="d-flex justify-content-center col-md-12 mt-2 mb-2 " style="background: #56baed;" >
+    <div class="col-md-9">
+        <h1 class="d-flex justify-content-center display-2" style="margin-top: 60px;">Post Details</h1>
+        <div class="container col-md-12" style="margin-bottom: 10px;">
+            <div class="card" style="padding: 30px;">
+                <div class="card-body">
+                    <h2 class="card-title display-3" id="card_title"></h2>
+                    <p id="card_username"></p>
+                    <p id="card_datetime"> </p><hr>
+                    <h3 id="card_description" class="card-text">
+                    </h3>
+                    <br>
+                    <a class="btn btn-danger" href="#">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
